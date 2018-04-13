@@ -73,8 +73,8 @@ public class Main {
 		int loopLength = numLength > engLength ? numLength:engLength;
 		StringBuffer sb = new StringBuffer();
 		
-		for (int i = 0; i < loopLength; i++) {
-			sb.append(i < engLength ? engList.get(i) : "").append(i < numLength ? numList.get(i) : "");
+		for (int loopIdx = 0; loopIdx < loopLength; loopIdx++) {
+			sb.append(loopIdx < engLength ? engList.get(loopIdx) : "").append(loopIdx < numLength ? numList.get(loopIdx) : "");
 		}
 		
 		/*for (int i = 0; i < loopLength; i++) {
@@ -110,19 +110,17 @@ public class Main {
 	 */
 	public static ArrayList<String> getTextReturn(String text, final String order) {
 		
-		ArrayList<String> textList = new ArrayList<String>();
+		ArrayList<String> textList = new ArrayList<String>();		
+		char c;
 		
-		char[] array_word = new char[text.length()]; // 스트링을 담을 배열
-		 
-		for(int i=0; i<array_word.length; i++) {
-		    array_word[i]=(text.charAt(i));//스트링을 한글자씩 끊어 배열에 저장
-		    String stringValueOf = String.valueOf(array_word[i]);
-		    textList.add(i, stringValueOf);
+		for(int charIdx=0; charIdx<text.length(); charIdx++) {
+		    c = (text.charAt(charIdx));
+		    textList.add(charIdx, String.valueOf(c));
 		}
 		
 		Collections.sort(textList, new Comparator<String>() {
     	    public int compare(String s1, String s2) {
-    	        return "desc".equals(order) ? s2.compareTo(s1) : s1.compareTo(s2);
+    	        return "desc".equals(order)?s2.compareTo(s1):s1.compareTo(s2);
     	    }
     	});
 		
