@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
 /**
@@ -67,47 +68,23 @@ public class Main {
 	 */
 	public static void viewStr(ArrayList<String> numList, ArrayList<String> engList ) {
 		
+		int numLength = numList.size();
+		int engLength = engList.size();
+		int loopLength = numLength > engLength ? numLength:engLength;
 		StringBuffer sb = new StringBuffer();
-		int engListSize = engList.size();
-		int numListSize = numList.size();
 		
-		if(engListSize >= numListSize) {
-			for(int englishIdx=0; englishIdx<engListSize; englishIdx++) {
-				sb.append(engList.get(englishIdx));
-				
-				for(int numIdx=0+englishIdx; numIdx<numListSize; numIdx++) {
-					sb.append(numList.get(numIdx));
-					break;
-				}
-			}
-		} else { // ex) 427ad  <++ 숫자를 문자보다 많이 넣을 경우
-			int checkNumOrd = 0;
-			System.out.println("test : "+numListSize);
-			
-			if(numListSize == 1) {
-				sb.append(numList.get(0));
-			} else {
-				for(int englishIdx=0; englishIdx<engListSize; englishIdx++) {
-					sb.append(engList.get(englishIdx));
-					
-					for(int numIdx=0+englishIdx; numIdx<numListSize; numIdx++) {
-						sb.append(numList.get(numIdx));
-						checkNumOrd = numIdx;
-						break;
-					}
-				}
-				if(numListSize > engListSize) {
-					int engSize = 0;
-					if(engListSize != 0) {
-						engSize = 1;
-					}
-					for(int numIdx=checkNumOrd+engSize; numIdx<numListSize; numIdx++) {
-						sb.append(numList.get(numIdx));
-						checkNumOrd = numIdx;
-					}
-				}
-			}
+		for (int i = 0; i < loopLength; i++) {
+			sb.append(i < engLength ? engList.get(i) : "").append(i < numLength ? numList.get(i) : "");
 		}
+		
+		/*for (int i = 0; i < loopLength; i++) {
+			if (i < engLength) {
+				sb.append(engList.get(i));
+			}
+			if (i < numLength) {
+				sb.append(numList.get(i));
+			}
+		}*/
 		
 		System.out.println("sb : "+sb.toString());
 		System.out.println("==== 종료되었습니다 ====");
@@ -131,24 +108,38 @@ public class Main {
 	 * @param order : 내림차순(desc), 오름차순(asc)
 	 * @return 정렬 된 리스트 데이터
 	 */
-	public static ArrayList<String> getTextReturn(String text, String order) {
+	public static ArrayList<String> getTextReturn(String text, final String order) {
+		
 		ArrayList<String> textList = new ArrayList<String>();
 		
 		char[] array_word = new char[text.length()]; // 스트링을 담을 배열
 		 
 		for(int i=0; i<array_word.length; i++) {
 		    array_word[i]=(text.charAt(i));//스트링을 한글자씩 끊어 배열에 저장
-		    //System.out.println(array_word[i]); //출력
 		    String stringValueOf = String.valueOf(array_word[i]);
 		    textList.add(i, stringValueOf);
 		}
 		
+		Collections.sort(textList, new Comparator<String>() {
+    	    public int compare(String s1, String s2) {
+    	        return "desc".equals(order) ? s2.compareTo(s1) : s1.compareTo(s2);
+    	    }
+    	});
+		
+		return textList;
+		
+		/*ArrayList<String> textList = new ArrayList<String>();
+		char[] array_word = new char[text.length()]; // 스트링을 담을 배열
+		for(int i=0; i<array_word.length; i++) {
+		    array_word[i]=(text.charAt(i));//스트링을 한글자씩 끊어 배열에 저장
+		    String stringValueOf = String.valueOf(array_word[i]);
+		    textList.add(i, stringValueOf);
+		}
 		Collections.sort(textList);
 		if("desc".equals(order)) {
 			Collections.reverse(textList);
 		}
-		
-		return textList;
+		return textList;*/
 	}
 	
 	/**
